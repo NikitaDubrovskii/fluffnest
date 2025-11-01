@@ -1,80 +1,42 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PetHappinessStat : MonoBehaviour
+public class PetHappinessStat : PetStatBase
 {
-    [SerializeField] [Tooltip("Текущее счастье")] 
-    private int happiness = 100;
+    public PetStatBase health;
+    public PetStatBase hunger;
     
-    [SerializeField] [Tooltip("Максимум")] 
-    private int maxHappiness = 100;
-    
-    [SerializeField] [Tooltip("Минимум")] 
-    private int minHappiness = 0;
+    // Расчет: -1 / 3 секунды = ~ -0.3333 за секунду
+    private const float TestDecayPerSecond = -0.3333f;
 
-    [SerializeField] [Tooltip("Как часто будет уменьшаться счастье (в секундах)")] 
-    private float decayInterval = 5f;
-    
-    [SerializeField] [Tooltip("На сколько будет уменьшаться за раз")] 
-    private int happinessDecay = 1;
-
-    [SerializeField] 
-    private Slider happinessBar;
-    
-    private void Start()
+    protected override float CalculateDecayRate(float deltaTime)
     {
-        // Запускаем нашу логику "скуки"
-        // Coroutine - это как отдельный процесс, который может "ждать"
-        StartCoroutine(DecayHappiness());
-    }
-
-    private void Update()
-    {
-        // Постоянно обновляем значение слайдера, чтобы оно = нашему счастью
-        if (happinessBar != null)
+        // ФЛАГ ТЕСТИРОВАНИЯ: -1 за 3 секунды
+        if (isDefaultDecayEnabled)
         {
-            happinessBar.value = happiness;
+            return TestDecayPerSecond; 
         }
-    }
 
-    // Это Корутина (Coroutine). Она будет работать "параллельно"
-    // Ее задача - отсчитать 5 секунд, уменьшить счастье, и снова отсчитать 5 секунд
-    private IEnumerator DecayHappiness()
-    {
-        // Бесконечный цикл, который работает, пока живет питомец
-        while (true)
+        // РЕЖИМ ЗАВИСИМОСТИ (Уменьшение только при плохих условиях)
+        float decay = 0f;
+        
+        // 1. Ускорение от Голода: Голод < 20
+        if (hunger.CurrentValue < 0.2f * hunger.MaxValue) 
         {
-            // 1. Ждем N секунд
-            yield return new WaitForSeconds(decayInterval);
-
-            // 2. Уменьшаем счастье
-            happiness -= happinessDecay;
-
-            // 3. Проверяем, чтобы счастье не ушло ниже минимума
-            if (happiness < minHappiness)
-            {
-                happiness = minHappiness;
-            }
-
-            // 4. (Для теста) Выводим в консоль текущее счастье
-            Debug.Log("Happiness is now: " + happiness);
+            decay += -0.003f; // Медленное падение (до нуля за ~9.2 часа)
         }
+
+        // 2. Ускорение от Здоровья: Здоровье < 30
+        if (health.CurrentValue < 0.3f * health.MaxValue)
+        {
+            decay += -0.005f; // Более быстрое падение (до нуля за ~5.5 часа)
+        }
+        
+        return decay;
     }
 
     // --- Публичные функции для КНОПОК ---
-    // Этот метод мы будем вызывать по нажатию кнопки "Поиграть"
-
     public void PlayWithPet()
     {
-        happiness += 10; // Даем +10 счастья
-
-        // Проверяем, чтобы счастье не ушло выше максимума
-        if (happiness > maxHappiness)
-        {
-            happiness = maxHappiness;
-        }
-
-        Debug.Log("Played with pet! Happiness: " + happiness);
+        IncreaseStat(25f); // +25% счастья
     }
 }

@@ -1,80 +1,42 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PetHealthStat : MonoBehaviour
+public class PetHealthStat : PetStatBase
 {
-    [SerializeField] [Tooltip("Текущее здоровье")] 
-    private int health = 100;
-    
-    [SerializeField] [Tooltip("Максимум")] 
-    private int maxHealth = 100;
-    
-    [SerializeField] [Tooltip("Минимум")] 
-    private int minHealth = 0;
+    public PetStatBase happiness;
+    public PetStatBase hunger;
 
-    [SerializeField] [Tooltip("Как часто будет уменьшаться здоровье (в секундах)")] 
-    private float decayInterval = 5f;
-    
-    [SerializeField] [Tooltip("На сколько будет уменьшаться за раз")] 
-    private int healthDecay = 1;
+    // Расчет: -1 / 3 секунды = ~ -0.3333 за секунду
+    private const float TestDecayPerSecond = -0.3333f;
 
-    [SerializeField] 
-    private Slider healthBar;
-
-    private void Start()
+    protected override float CalculateDecayRate(float deltaTime)
     {
-        // Запускаем нашу логику "скуки"
-        // Coroutine - это как отдельный процесс, который может "ждать"
-        StartCoroutine(DecayHappiness());
-    }
-
-    private void Update()
-    {
-        // Постоянно обновляем значение слайдера, чтобы оно = нашему счастью
-        if (healthBar != null)
+        // ФЛАГ ТЕСТИРОВАНИЯ: -1 за 3 секунды
+        if (isDefaultDecayEnabled)
         {
-            healthBar.value = health;
+            return TestDecayPerSecond; 
         }
-    }
 
-    // Это Корутина (Coroutine). Она будет работать "параллельно"
-    // Ее задача - отсчитать 5 секунд, уменьшить счастье, и снова отсчитать 5 секунд
-    private IEnumerator DecayHappiness()
-    {
-        // Бесконечный цикл, который работает, пока живет питомец
-        while (true)
+        // РЕЖИМ ЗАВИСИМОСТИ (Уменьшение только при критических условиях)
+        float decay = 0f;
+
+        // 1. Ускорение от Критического Голода: Голод < 10
+        if (hunger.CurrentValue < 0.1f * hunger.MaxValue)
         {
-            // 1. Ждем N секунд
-            yield return new WaitForSeconds(decayInterval);
-
-            // 2. Уменьшаем счастье
-            health -= healthDecay;
-
-            // 3. Проверяем, чтобы счастье не ушло ниже минимума
-            if (health < minHealth)
-            {
-                health = minHealth;
-            }
-
-            // 4. (Для теста) Выводим в консоль текущее счастье
-            Debug.Log("Happiness is now: " + health);
+            decay += -0.007f; // Самое быстрое падение (до нуля за ~4 часа)
         }
+
+        // 2. Ускорение от Критического Несчастья: Счастье < 15
+        if (happiness.CurrentValue < 0.15f * happiness.MaxValue)
+        {
+            decay += -0.006f; // Быстрое падение (до нуля за ~4.6 часа)
+        }
+
+        return decay;
     }
 
     // --- Публичные функции для КНОПОК ---
-    // Этот метод мы будем вызывать по нажатию кнопки "полечить"
-
-    public void CureAPet()
+    public void HealPet()
     {
-        health += 10; // Даем +10 здоровья
-
-        // Проверяем, чтобы здоровье не ушло выше максимума
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
-
-        Debug.Log("Cure a pet! Health: " + health);
+        IncreaseStat(30f); // +30% здоровья
     }
 }
