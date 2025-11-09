@@ -551,7 +551,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetHealthStat
   maxValue: 100
-  isDefaultDecayEnabled: 1
   currentValue: 69
   statBar: {fileID: 584031254}
   happiness: {fileID: 1209092728}
@@ -601,7 +600,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetHungerStat
   maxValue: 100
-  isDefaultDecayEnabled: 1
   currentValue: 80
   statBar: {fileID: 1646601383}
 --- !u!4 &288251687
@@ -631,6 +629,8 @@ GameObject:
   - component: {fileID: 461559574}
   - component: {fileID: 461559573}
   - component: {fileID: 461559572}
+  - component: {fileID: 461559576}
+  - component: {fileID: 461559575}
   m_Layer: 5
   m_Name: Health Button
   m_TagString: Untagged
@@ -676,7 +676,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -726,15 +726,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.8039216, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: db01949c741d1b548bdedf3d7e75ec22, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -751,6 +751,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461559570}
   m_CullTransparentMesh: 1
+--- !u!111 &461559575
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461559570}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!95 &461559576
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461559570}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c7630d3a28f4b2d4484cda9e7deb0a19, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &584031252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,7 +1772,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetHappinessStat
   maxValue: 100
-  isDefaultDecayEnabled: 1
   currentValue: 87
   statBar: {fileID: 1002578274}
   health: {fileID: 206586084}
@@ -1934,6 +1971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetStatsManager
   updateIntervalSeconds: 5
+  isDefaultDecayEnabled: 1
   happiness: {fileID: 1209092728}
   hunger: {fileID: 288251686}
   health: {fileID: 206586084}
@@ -1967,6 +2005,7 @@ GameObject:
   - component: {fileID: 1471201268}
   - component: {fileID: 1471201267}
   - component: {fileID: 1471201266}
+  - component: {fileID: 1471201269}
   m_Layer: 5
   m_Name: Hunger Button
   m_TagString: Untagged
@@ -2012,7 +2051,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2062,15 +2101,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.3882353, b: 0.2784314, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 124f232910938c04b8853950684e13ea, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2087,6 +2126,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471201264}
   m_CullTransparentMesh: 1
+--- !u!95 &1471201269
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471201264}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4565a8a3955cad40b1557ddbab556c4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1635187673
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,6 +2595,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetClickHandler
   petHappinessStat: {fileID: 1209092728}
+  floatingTextPrefab: {fileID: 2157508736297469971, guid: eadb83724d4af0e4e980c04db35d4c8f, type: 3}
+  uiCanvas: {fileID: 785155743}
+  pointsPerClick: 2
+  textPrefab: {fileID: 2258559250743853017, guid: e4a4fb68d9af2e245af30e29e76c660b, type: 3}
 --- !u!65 &1771015964
 BoxCollider:
   m_ObjectHideFlags: 0

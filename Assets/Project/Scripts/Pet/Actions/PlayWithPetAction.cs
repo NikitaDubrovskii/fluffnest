@@ -9,12 +9,12 @@ public class PlayWithPetAction : IPetClickAction
         this.petHappinessStat = petHappinessStat;
     }
 
+    /// Обрабатывает клик по питомцу, запуская игру
     public void OnPetClicked(GameObject pet)
     {
         if (petHappinessStat != null)
         {
             petHappinessStat.PlayWithPet();
-            Debug.Log("Питомец играет через контроллер! 🐱❤️");
         }
         else
         {
